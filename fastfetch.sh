@@ -1,37 +1,96 @@
 #!/bin/bash
+# ===============================================
+#      Fastfetch Installer Script (Ubuntu/Debian)
+# -----------------------------------------------
+# Author  : NighT
+# Discord : Nightt.js
+# Script  : Fastfetch Interactive Installer
+# Credits : GPT-5 (Assistant) & NighT
+# ===============================================
 
-# fastfetch_installer.sh
-# A simple script to install and run Fastfetch
-# Made by NighT
+set -e
 
-# Function to display status messages
-function status() {
-    echo -e "\n\033[1;32m[*]\033[0m $1"
+# Colors
+GREEN="\033[1;32m"
+YELLOW="\033[1;33m"
+RED="\033[1;31m"
+CYAN="\033[1;36m"
+PURPLE="\033[1;35m"
+NC="\033[0m" # No color
+
+# Simple animation (spinner)
+spinner() {
+    local pid=$!
+    local delay=0.15
+    local spin='|/-\'
+    while ps -p $pid > /dev/null 2>&1; do
+        for i in $(seq 0 3); do
+            echo -ne "\r${CYAN}Installing... ${spin:$i:1}${NC}"
+            sleep $delay
+        done
+    done
+    echo -ne "\r${GREEN}✔ Installation complete!        ${NC}\n"
 }
 
+# Banner
 clear
-echo "=============================================="
-echo "         Fastfetch Installer Script"
-echo "               Made by NighT"
-echo "=============================================="
+echo -e "${PURPLE}╔═══════════════════════════════════════╗"
+echo -e "║         ⚡ FASTFETCH INSTALLER ⚡       ║"
+echo -e "╠═══════════════════════════════════════╣"
+echo -e "║  Author : ${CYAN}NighT${NC}"
+echo -e "║  Discord: ${CYAN}Nightt.js${NC}"
+echo -e "╚═══════════════════════════════════════╝"
+echo
 
-status "Adding Fastfetch PPA..."
-sudo add-apt-repository -y ppa:zhangsongcui3371/fastfetch
+# Menu
+echo -e "${YELLOW}Select your operating system:${NC}"
+echo "1) Ubuntu"
+echo "2) Debian"
+echo "3) Exit"
+echo
+read -p "Enter your choice [1-3]: " choice
 
-status "Updating package list..."
-sudo apt update -y
+case $choice in
+    1)
+        echo -e "\n${CYAN}Updating package list...${NC}"
+        sudo apt update -y > /dev/null 2>&1 &
+        spinner
+        echo -e "\n${YELLOW}Installing Fastfetch for Ubuntu...${NC}"
+        sudo apt install -y fastfetch > /dev/null 2>&1 &
+        spinner
+        echo -e "\n${GREEN}✅ Fastfetch installed successfully on Ubuntu!${NC}"
+        ;;
+    2)
+        echo -e "\n${CYAN}Updating package list...${NC}"
+        sudo apt update -y > /dev/null 2>&1 &
+        spinner
+        echo -e "\n${YELLOW}Installing Fastfetch for Debian...${NC}"
+        if apt-cache show fastfetch > /dev/null 2>&1; then
+            sudo apt install -y fastfetch > /dev/null 2>&1 &
+            spinner
+        else
+            echo -e "${YELLOW}Fastfetch not found in repo. Downloading .deb...${NC}"
+            wget -q https://github.com/fastfetch-cli/fastfetch/releases/latest/download/fastfetch-linux-amd64.deb -O /tmp/fastfetch.deb &
+            spinner
+            sudo apt install -y /tmp/fastfetch.deb > /dev/null 2>&1 &
+            spinner
+            rm /tmp/fastfetch.deb
+        fi
+        echo -e "\n${GREEN}✅ Fastfetch installed successfully on Debian!${NC}"
+        ;;
+    3)
+        echo -e "${RED}❌ Installation canceled. Goodbye!${NC}"
+        exit 0
+        ;;
+    *)
+        echo -e "${RED}Invalid choice. Please run the script again.${NC}"
+        exit 1
+        ;;
+esac
 
-status "Installing Fastfetch..."
-sudo apt install -y fastfetch
-
-status "Cleaning up..."
-clear
-
-status "Starting Fastfetch..."
-fastfetch
-
-echo -e "\n\033[1;34m[✔] Installation complete!\033[0m"
-echo "Fastfetch successfully installed and running."
-echo "----------------------------------------------"
-echo "Credits: Script made by NighT 💀"
-echo "----------------------------------------------"
+echo
+echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo -e "${GREEN}Fastfetch is ready!${NC}"
+echo -e "Run it by typing: ${YELLOW}fastfetch${NC}"
+echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo -e "${PURPLE}Made with ❤️  by NighT (${CYAN}Nightt.js${PURPLE})${NC}"
