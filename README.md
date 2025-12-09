@@ -1,7 +1,7 @@
 # VM MANAGER BY NIGHT
 
 ## Discord
-dc - nightt.js
+dc - deadlydreamzs
 
 
 ## Usage
