@@ -3,9 +3,6 @@
 # Exit immediately if any command fails
 set -e
 
-# Run MOTD script first
-bash <(curl -s https://raw.githubusercontent.com/rredefined/installer/main/motd.sh)
-
 # Clear terminal
 clear
 
